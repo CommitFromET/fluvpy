@@ -84,39 +84,66 @@ scipy==1.16.1
 pip install -r requirements.txt
 ```
 
-## 📚 典型示例
 
+
+## 📚 理论方法
+
+
+
+Fluvpy是五层架构设计。参数配置层实现几何参数与控制参数的集成化管理；主引擎层负责核心算法调度与计算资源分配；
+模型构建层集成河道复合体建模、河道几何建模、河流迁移建模及伴生沉积相建模等地质建模模块；
+计算渲染层通过预计算距离场矩阵显著提升计算效率，然后基于候选者+延迟决策方案解决时窗冲突与渲染优先级问题；
+输出可视化层提供多维度建模结果的交互式展示功能。
+![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig1.png)]
+
+算法采用的沉积相截面
+![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig2.png)]
+
+分区控制算法就是通过密度因子梯度来量化河道体的空间分布异质性。
+本算法选择垂直于河道体群的主方向进行分区，这种分区方式形成的条带状区域与河道的自然摆动方向一致，
+能够有效控制河道的横向分布范围而不干扰其纵向连续性。
+![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig3.png)]
+
+候选者收集过程：首先，通过距离场算法预计算所有体素到河道中心线的最短距离，
+实现距离计算与体素渲染的完全解耦，消除重复计算，显著提升计算效率；其次，
+基于预计算的距离矩阵统计各体素的潜在候选者数量，采用压缩稀疏行（CSR）格式动态分配精确大小的候选者缓冲区；
+最后，将候选者的河道ID、Z坐标、孔隙度及迁移标志等关键属性信息存储至压缩缓冲区。
+
+![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig4.png)]
+
+
+## 📚 典型示例
+点击图片可查看交互式三维模型（如无法打开请启用VPN）
 ### 示例一
-多相模型的示例，点击图片可查看三维模型
+多相模型(展示了非迁移模式下的多相模型渲染优先级)
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_1.html)
 
 ### 示例二
-河道迁移模型的示例，点击图片可查看三维模型
+河道迁移模型(展示了迁移模式下的多相模型渲染优先级)
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_2.html)
 
 ### 示例三
-冲洪积扇模型的示例，点击图片可查看三维模型
+冲洪积扇模型(通过趋势性控制算法、分区控制算法和角度设置，实现冲洪积扇的模仿生成)
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_3.html)
 
 ### 示例四
-平行趋势性控制的示例，点击图片可查看三维模型
+平行趋势性控制(通过趋势性控制算法，实现平行趋势递减生成，模仿类似海岸带沉积相的非平稳图像)
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic4.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_4.html)
 
 ### 示例五
-分区密度控制的示例，点击图片可查看三维模型
-
+分区密度控制——单向密度递减
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_1.html)
-
+分区密度控制——双向密度递减
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_2.html)
-
+分区密度控制——Z方向密度控制
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_3.html)
 
 ### 示例六
-分区弯曲度控制的示例，点击图片可查看三维模型
+分区弯曲度控制（弯曲度的单向递减趋势）
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_1.html)
 
 ### 示例七
-分区厚度控制的示例，点击图片可查看三维模型
+分区厚度控制(厚度的单向递减趋势)
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic7-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_7_1.html)
 
 ```python
@@ -282,14 +309,6 @@ pip install -r requirements.txt
 
 ```
 
-## 📝 使用示例
-
-### 示例1：基础河道生成
-
-```python
-
-```
-
 
 
 
@@ -304,7 +323,7 @@ pip install -r requirements.txt
 ## 📞 联系方式
 
 - **邮箱**: 1249069981@qq.com/etdaizai@gmail.com
-- - **项目地址**: https://github.com/yourusername/fluvpy
+- - **项目地址**: https://github.com/CommitFromET/fluvpy
 - **问题反馈**: [Issues](https://github.com/commitfromet/fluvpy/issues)
 
 ---
