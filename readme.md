@@ -26,7 +26,6 @@
 - [📝 项目摘要](#-项目摘要)
 - [✨ 算法特性](#-算法特性)
 - [🚀 快速开始](#-快速开始)
-- [🔬 理论方法](#-理论方法)
 - [🎨 典型示例](#-典型示例)
 - [🛠️ 主要参数](#️-主要参数)
 - [🤝 贡献](#-贡献)
@@ -120,40 +119,6 @@ scipy==1.16.1
 ```bash
 pip install -r requirements.txt
 ```
-
-## 🔬 理论方法
-
-Fluvpy是五层架构设计。参数配置层实现几何参数与控制参数的集成化管理；主引擎层负责核心算法调度与计算资源分配；
-模型构建层集成河道复合体建模、河道几何建模、河流迁移建模及伴生沉积相建模等地质建模模块；
-计算渲染层通过预计算距离场矩阵显著提升计算效率，然后基于候选者+延迟决策方案解决时窗冲突与渲染优先级问题；
-输出可视化层提供多维度建模结果的交互式展示功能。
-
-![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig1.png)
-
-<div align="center">
-Fluvpy系统架构设计与主要参数指南。（a）系统的层次化架构，主要分为5层。（b）算法的主要功能模块。（c）算法的主体工作流程（d）数据流与计算流程（e）程序主要参数
-</div>
-
-算法采用的沉积相截面
-![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig2.png)
-<div align="center">
-算法采用的沉积相截面
-</div>
-
-分区控制算法就是通过密度因子梯度来量化河道体的空间分布异质性。
-本算法选择垂直于河道体群的主方向进行分区，这种分区方式形成的条带状区域与河道的自然摆动方向一致，
-能够有效控制河道的横向分布范围而不干扰其纵向连续性。
-![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig3.png)
-<div align="center">
-分区控制算法示意图与流程图
-</div>
-
-候选者收集过程：首先，通过距离场算法预计算所有体素到河道中心线的最短距离，
-实现距离计算与体素渲染的完全解耦，消除重复计算，显著提升计算效率；其次，
-基于预计算的距离矩阵统计各体素的潜在候选者数量，采用压缩稀疏行（CSR）格式动态分配精确大小的候选者缓冲区；
-最后，将候选者的河道ID、Z坐标、孔隙度及迁移标志等关键属性信息存储至压缩缓冲区。
-
-![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/method_png/fig4.png)
 
 ## 🎨 典型示例
 点击图片可查看交互式三维模型（如无法打开请启用VPN）
