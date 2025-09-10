@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binary & JSON Polygon Surface Viewer</title>
+    <title>Binary & JSON Polygon Surface Viewer (Z-Up)</title>
     <style>
         body {
             margin: 0;
@@ -291,6 +291,26 @@
             background: #f8d7da;
             color: #721c24;
         }
+
+        .coordinate-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .coordinate-info h3 {
+            margin: 0 0 5px 0;
+            color: #856404;
+            font-size: 13px;
+        }
+
+        .coordinate-info p {
+            margin: 0;
+            font-size: 11px;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -302,6 +322,12 @@
         </div>
 
         <div id="controls">
+            <div class="coordinate-info">
+                <h3>Coordinate System</h3>
+                <p><strong>Z-axis Up</strong> (Right-handed coordinate system)</p>
+                <p>X: East-West direction | Y: North-South direction | Z: Vertical up</p>
+            </div>
+
             <div class="github-info" id="github-info">
                 <h3>GitHub Data Source</h3>
                 <p>Repository: <strong>CommitFromET/fluvpy-test-b</strong></p>
@@ -333,9 +359,11 @@
             <div class="control-group" id="view-controls" style="display: none;">
                 <h3>View Controls</h3>
                 <button onclick="resetCamera()">Reset View</button>
-                <button onclick="topView()">Top View</button><br>
-                <button onclick="sideView()">Side View</button>
-                <button onclick="frontView()">Front View</button><br>
+                <button onclick="topView()">Top View (Z+)</button><br>
+                <button onclick="bottomView()">Bottom View (Z-)</button>
+                <button onclick="sideView()">Side View (Y+)</button><br>
+                <button onclick="frontView()">Front View (X+)</button>
+                <button onclick="backView()">Back View (X-)</button><br>
                 <button onclick="toggleWireframe()">Wireframe</button>
                 <button onclick="toggleDebug()">Debug</button>
             </div>
@@ -348,6 +376,7 @@
                 <div class="stats-item">Realization: <span id="realization">-</span></div>
                 <div class="stats-item">Version: <span id="format-version">-</span></div>
                 <div class="stats-item">Data Type: <span id="data-type">-</span></div>
+                <div class="stats-item">Coordinate System: <strong>Z-Up (Right-handed)</strong></div>
             </div>
 
             <div class="stats-section">
@@ -373,8 +402,8 @@
 
             <div class="stats-section">
                 <h4>Controls</h4>
-                <div class="stats-item">• Left drag: Rotate</div>
-                <div class="stats-item">• Scroll: Zoom</div>
+                <div class="stats-item">• Left drag: Rotate around Z-axis</div>
+                <div class="stats-item">• Scroll: Zoom in/out</div>
                 <div class="stats-item">• Use preset views above</div>
             </div>
         </div>
@@ -395,8 +424,8 @@
 
         // GitHub URLs for data loading
         const GITHUB_URLS = [
-            'https://raw.githubusercontent.com/CommitFromET/fluvpy/master/web_data/data5_1.bin',
-            'https://cdn.jsdelivr.net/gh/CommitFromET/fluvpy@master/web_data/data5_1.bin'
+            'https://raw.githubusercontent.com/CommitFromET/fluvpy/master/web_data/data2.bin',
+            'https://cdn.jsdelivr.net/gh/CommitFromET/fluvpy@master/web_data/data2.bin'
         ];
 
         // Show error message
@@ -473,7 +502,9 @@
         let dataBounds = null;
         let isMouseDown = false;
         let mouseX = 0, mouseY = 0;
-        let targetX = 0, targetY = 0;
+        // Changed to Z-axis up angle variable naming
+        let azimuth = 0;    // Horizontal rotation angle (around Z-axis)
+        let elevation = 0;  // Vertical angle (from XY plane upward)
         let cameraRadius = 1000;
         let debugMode = false;
         let fileMetadata = {};
@@ -948,10 +979,12 @@
             const deltaX = event.clientX - mouseX;
             const deltaY = event.clientY - mouseY;
 
-            targetX += deltaX * 0.01;
-            targetY -= deltaY * 0.01;
+            // Updated for Z-axis up angle control
+            azimuth += deltaX * 0.01;  // Horizontal rotation (around Z-axis)
+            elevation -= deltaY * 0.01; // Vertical rotation (elevation angle)
 
-            targetY = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, targetY));
+            // Limit elevation range (-90° to +90°)
+            elevation = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, elevation));
 
             updateCameraPosition();
 
@@ -971,6 +1004,7 @@
             event.preventDefault();
         }
 
+        // Modified for Z-axis up camera position calculation
         function updateCameraPosition() {
             if (!dataBounds) return;
 
@@ -978,11 +1012,17 @@
             const centerY = dataBounds.center.y;
             const centerZ = dataBounds.center.z;
 
-            camera.position.x = centerX + cameraRadius * Math.sin(targetX) * Math.cos(targetY);
-            camera.position.y = centerY + cameraRadius * Math.sin(targetY);
-            camera.position.z = centerZ + cameraRadius * Math.cos(targetX) * Math.cos(targetY);
+            // Z-axis up spherical coordinate system
+            // elevation: angle from XY plane upward (-π/2 to π/2)
+            // azimuth: horizontal rotation around Z-axis
+            camera.position.x = centerX + cameraRadius * Math.cos(elevation) * Math.cos(azimuth);
+            camera.position.y = centerY + cameraRadius * Math.cos(elevation) * Math.sin(azimuth);
+            camera.position.z = centerZ + cameraRadius * Math.sin(elevation);
 
             camera.lookAt(centerX, centerY, centerZ);
+
+            // Set camera's up vector to positive Z-axis
+            camera.up.set(0, 0, 1);
         }
 
         // Create 3D visualization
@@ -1071,41 +1111,59 @@
             debugLog(`Surface ${facies_name} created successfully`);
         }
 
-        // Preset camera views
+
         function resetCamera() {
             if (!dataBounds) return;
-            targetX = Math.PI / 4;
-            targetY = Math.PI / 6;
+            azimuth = Math.PI / 4;
+            elevation = Math.PI / 6;
             cameraRadius = Math.max(dataBounds.size.x, dataBounds.size.y, dataBounds.size.z) * 1.8;
             updateCameraPosition();
-            debugLog('Camera reset to default view');
+            debugLog('Camera reset to default view (Z-up)');
         }
 
         function topView() {
             if (!dataBounds) return;
-            targetX = 0;
-            targetY = Math.PI / 2 - 0.1;
+            azimuth = 0;
+            elevation = Math.PI / 2 - 0.1;
             cameraRadius = Math.max(dataBounds.size.x, dataBounds.size.y) * 1.2;
             updateCameraPosition();
-            debugLog('Camera set to top view');
+            debugLog('Camera set to top view (Z+)');
+        }
+
+        function bottomView() {
+            if (!dataBounds) return;
+            azimuth = 0;
+            elevation = -Math.PI / 2 + 0.1;
+            cameraRadius = Math.max(dataBounds.size.x, dataBounds.size.y) * 1.2;
+            updateCameraPosition();
+            debugLog('Camera set to bottom view (Z-)');
         }
 
         function sideView() {
             if (!dataBounds) return;
-            targetX = Math.PI / 2;
-            targetY = 0;
+            azimuth = Math.PI / 2;
+            elevation = 0;
             cameraRadius = Math.max(dataBounds.size.x, dataBounds.size.z) * 1.5;
             updateCameraPosition();
-            debugLog('Camera set to side view');
+            debugLog('Camera set to side view (Y+)');
         }
 
         function frontView() {
             if (!dataBounds) return;
-            targetX = 0;
-            targetY = 0;
+            azimuth = 0;   // 0 degrees, looking along positive X direction
+            elevation = 0; // horizontal
             cameraRadius = Math.max(dataBounds.size.y, dataBounds.size.z) * 1.5;
             updateCameraPosition();
-            debugLog('Camera set to front view');
+            debugLog('Camera set to front view (X+)');
+        }
+
+        function backView() {
+            if (!dataBounds) return;
+            azimuth = Math.PI;
+            elevation = 0;
+            cameraRadius = Math.max(dataBounds.size.y, dataBounds.size.z) * 1.5;
+            updateCameraPosition();
+            debugLog('Camera set to back view (X-)');
         }
 
         // Create text texture
@@ -1132,6 +1190,7 @@
             return texture;
         }
 
+        // Modified coordinate axis display for Z-axis up
         function addCoordinateHelpers() {
             if (!dataBounds) return;
 
@@ -1139,19 +1198,20 @@
             const arrowLength = axisLength * 0.1;
             const arrowRadius = axisLength * 0.02;
 
+            // Origin set at data bottom center
             const origin = {
                 x: dataBounds.center.x,
                 y: dataBounds.center.y,
                 z: dataBounds.min.z - dataBounds.size.z * 0.1
             };
 
-            // X-axis (red)
+            // X-axis (red) - East-West direction
             const xAxisGroup = new THREE.Group();
             const xGeometry = new THREE.CylinderGeometry(axisLength * 0.005, axisLength * 0.005, axisLength, 8);
             const xMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
             const xAxis = new THREE.Mesh(xGeometry, xMaterial);
             xAxis.position.set(origin.x + axisLength / 2, origin.y, origin.z);
-            xAxis.rotation.z = -Math.PI / 2;
+            xAxis.rotation.z = -Math.PI / 2;  // horizontal direction
             xAxisGroup.add(xAxis);
 
             const xArrowGeometry = new THREE.ConeGeometry(arrowRadius, arrowLength, 8);
@@ -1160,62 +1220,63 @@
             xArrow.rotation.z = -Math.PI / 2;
             xAxisGroup.add(xArrow);
 
-            const xLabelTexture = createTextTexture('X', 48, '#ff0000');
+            const xLabelTexture = createTextTexture('X (East)', 36, '#ff0000');
             const xLabelMaterial = new THREE.SpriteMaterial({ map: xLabelTexture });
             const xLabel = new THREE.Sprite(xLabelMaterial);
-            xLabel.position.set(origin.x + axisLength * 1.2, origin.y, origin.z);
-            xLabel.scale.set(axisLength * 0.3, axisLength * 0.15, 1);
+            xLabel.position.set(origin.x + axisLength * 1.3, origin.y, origin.z);
+            xLabel.scale.set(axisLength * 0.4, axisLength * 0.2, 1);
             xAxisGroup.add(xLabel);
 
             scene.add(xAxisGroup);
 
-            // Y-axis (green)
+            // Y-axis (green) - North-South direction
             const yAxisGroup = new THREE.Group();
             const yGeometry = new THREE.CylinderGeometry(axisLength * 0.005, axisLength * 0.005, axisLength, 8);
             const yMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
             const yAxis = new THREE.Mesh(yGeometry, yMaterial);
             yAxis.position.set(origin.x, origin.y + axisLength / 2, origin.z);
+            yAxis.rotation.x = Math.PI / 2;  // along Y direction
             yAxisGroup.add(yAxis);
 
             const yArrowGeometry = new THREE.ConeGeometry(arrowRadius, arrowLength, 8);
             const yArrow = new THREE.Mesh(yArrowGeometry, yMaterial);
             yArrow.position.set(origin.x, origin.y + axisLength, origin.z);
+            yArrow.rotation.x = Math.PI / 2;
             yAxisGroup.add(yArrow);
 
-            const yLabelTexture = createTextTexture('Y', 48, '#00ff00');
+            const yLabelTexture = createTextTexture('Y (North)', 36, '#00ff00');
             const yLabelMaterial = new THREE.SpriteMaterial({ map: yLabelTexture });
             const yLabel = new THREE.Sprite(yLabelMaterial);
-            yLabel.position.set(origin.x, origin.y + axisLength * 1.2, origin.z);
-            yLabel.scale.set(axisLength * 0.3, axisLength * 0.15, 1);
+            yLabel.position.set(origin.x, origin.y + axisLength * 1.3, origin.z);
+            yLabel.scale.set(axisLength * 0.4, axisLength * 0.2, 1);
             yAxisGroup.add(yLabel);
 
             scene.add(yAxisGroup);
 
-            // Z-axis (blue)
+            // Z-axis (blue) - Vertical up
             const zAxisGroup = new THREE.Group();
             const zGeometry = new THREE.CylinderGeometry(axisLength * 0.005, axisLength * 0.005, axisLength, 8);
             const zMaterial = new THREE.MeshLambertMaterial({ color: 0x0000ff });
             const zAxis = new THREE.Mesh(zGeometry, zMaterial);
             zAxis.position.set(origin.x, origin.y, origin.z + axisLength / 2);
-            zAxis.rotation.x = Math.PI / 2;
+            // Z-axis doesn't need rotation, it's already vertical
             zAxisGroup.add(zAxis);
 
             const zArrowGeometry = new THREE.ConeGeometry(arrowRadius, arrowLength, 8);
             const zArrow = new THREE.Mesh(zArrowGeometry, zMaterial);
             zArrow.position.set(origin.x, origin.y, origin.z + axisLength);
-            zArrow.rotation.x = Math.PI / 2;
             zAxisGroup.add(zArrow);
 
-            const zLabelTexture = createTextTexture('Z', 48, '#0000ff');
+            const zLabelTexture = createTextTexture('Z (Up)', 36, '#0000ff');
             const zLabelMaterial = new THREE.SpriteMaterial({ map: zLabelTexture });
             const zLabel = new THREE.Sprite(zLabelMaterial);
-            zLabel.position.set(origin.x, origin.y, origin.z + axisLength * 1.2);
-            zLabel.scale.set(axisLength * 0.3, axisLength * 0.15, 1);
+            zLabel.position.set(origin.x, origin.y, origin.z + axisLength * 1.3);
+            zLabel.scale.set(axisLength * 0.4, axisLength * 0.2, 1);
             zAxisGroup.add(zLabel);
 
             scene.add(zAxisGroup);
 
-            debugLog('Added coordinate axes with labels');
+            debugLog('Added coordinate axes with Z-up orientation');
         }
 
         function toggleWireframe() {
@@ -1236,7 +1297,7 @@
             debugPanel.style.display = debugMode ? 'block' : 'none';
 
             if (debugMode) {
-                document.getElementById('debug-content').innerHTML = 'Debug mode enabled<br>';
+                document.getElementById('debug-content').innerHTML = 'Debug mode enabled (Z-up coordinate system)<br>';
                 debugLog('Debug panel opened');
             }
         }
@@ -1255,7 +1316,7 @@
         // Main initialization function
         async function initApp() {
             try {
-                console.log('Initializing Binary Polygon Surface Viewer with GitHub integration...');
+                console.log('Initializing Binary Polygon Surface Viewer with Z-up coordinate system...');
 
                 document.getElementById('loading-detail').textContent = 'Loading Three.js library...';
 
@@ -1288,7 +1349,7 @@
                 // Hide loading indicator
                 document.getElementById('loading').style.display = 'none';
 
-                debugLog('Application initialized successfully');
+                debugLog('Application initialized successfully with Z-up coordinate system');
 
             } catch (error) {
                 console.error('Initialization failed:', error);
