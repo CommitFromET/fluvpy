@@ -149,7 +149,7 @@ pip install -r requirements.txt
 ### 示例六
 分区弯曲度控制（弯曲度的单向递减趋势）
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_1.html)
-分区弯曲度控制（弯曲度的单向递减趋势）
+分区弯曲度控制（弯曲度的双向递减趋势）
 [![Fluvpy 3D 河流沉积相可视化示例](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_2.html)
 
 ### 示例七
