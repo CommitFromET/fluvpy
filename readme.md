@@ -18,52 +18,54 @@
 
 </div>
 
-> Fluvpy is a Python package specifically designed for generating three-dimensional training images of fluvial sedimentary facies.
-> The primary objective of the Fluvpy algorithm is to achieve high conformity between the distributional characteristics of generated training images and the known statistical data of sedimentary facies distribution in the study area, ensuring adequate representativeness of the training images.
+> Fluvpy is a Python package specifically designed for generating 3D training images of fluvial sedimentary facies.
+> The primary objective of the Fluvpy algorithm is to achieve high consistency between the distribution characteristics of generated training images and the known sedimentary facies distribution statistical data from the study area, ensuring adequate representativeness of the training images.
 
 ## 📋 Table of Contents
 
-- [📝 Project Abstract](#-project-abstract)
+- [📝 Project Overview](#-project-overview)
 - [✨ Algorithm Features](#-algorithm-features)
 - [🚀 Quick Start](#-quick-start)
 - [🎨 Typical Examples](#-typical-examples)
 - [🛠️ Main Parameters](#️-main-parameters)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
-- [📞 Contact Information](#-contact-information)
+- [📞 Contact](#-contact)
 
-## 📝 Project Abstract
+## 📝 Project Overview
 
-> The effective application of deep learning algorithms in fluvial channel body identification relies on the acquisition of high-quality training images. However, existing algorithms for generating channel body training images struggle to effectively reproduce the statistical distribution characteristics of target areas.
-> This paper presents Fluvpy, a Python program for unconditional stochastic simulation of channel bodies, which enables heterogeneity control and diversified parameter distribution of subsurface channel bodies in macroscopic space.
-> The Fluvpy algorithm employs a hierarchical, modular architectural design with high robustness and extensibility. This algorithm focuses on training image generation for fluvial sedimentary facies and belongs to the category of unconditional modeling algorithms.
+> The effective application of deep learning algorithms in channel sand body identification relies on the acquisition of high-quality training images. However, existing channel body training image generation algorithms have difficulty effectively reproducing the statistical distribution characteristics of target areas.
+> This paper presents Fluvpy, a Python program for unconditional random simulation of channel bodies, which can achieve heterogeneity control and diverse parameter distributions of underground channel bodies in macro-spatial scale.
+> The Fluvpy algorithm adopts a hierarchical and modular architecture design with high robustness and scalability. This algorithm focuses on training image generation for fluvial sedimentary facies and belongs to the category of unconditional simulation algorithms.
 
 ## ✨ Algorithm Features
 
-- **Precise Sinuosity Control**: Based on an enhanced framework of the Ferguson algorithm, incorporating a sinuosity feedback correction mechanism that achieves precise sinuosity control while maintaining the physical evolutionary characteristics of channels
-- **Accurate Density Distribution Heterogeneity**: Proposes a Polling and Probability Dual Mechanism (PPDM) that effectively controls regional density of channels in XZ directions, enabling macroscopic heterogeneity simulation of channel complexes in lateral and longitudinal space
-- **Advanced Rendering Scheme**: Introduces a candidate collection and delayed decision rendering scheme, based on which a rendering priority algorithm is constructed, effectively ensuring geological rationality of spatial superposition relationships of sedimentary bodies while resolving parallel time window conflicts during GPU rendering
-- **Diversified Geometric Parameter Distributions**: Through intelligent mapping from parameter dictionaries to probability distribution functions, enables multiple distribution modes for various parameters
-- **Integrated Channel Migration Patterns**: Incorporates vegetation reinforcement influence mechanisms, implementing the effects of heterogeneous vegetation on channel migration resistance
+- **Precise Sinuosity Control**: Based on an enhanced framework of the Ferguson algorithm, by introducing a sinuosity feedback correction mechanism, precise control of sinuosity is achieved while maintaining the physical evolution characteristics of channels
+- **Precise Density Distribution Heterogeneity**: Proposes a Polling + Probability Dual Mechanism (PPDM) that effectively controls the zonal density of channels in the XZ directions, achieving macro-heterogeneity simulation of channel body groups in horizontal and vertical spatial dimensions
+- **Advanced Rendering Scheme**: Proposes a candidate collection + delayed decision rendering scheme, based on which a rendering priority algorithm is constructed, effectively ensuring geological reasonableness of spatial superposition relationships of sedimentary bodies,
+- while solving parallel time window conflicts during GPU rendering
+- **Diverse Geometric Parameter Distributions**: Through intelligent mapping from parameter dictionaries to probability distribution functions, multiple distribution modes for various parameters are achieved
+- **Integrated Channel Migration Patterns**: Introduces vegetation reinforcement influence mechanisms, achieving the impact of heterogeneous vegetation on channel migration resistance
 
 ## 🚀 Quick Start
 
 ### 💻 System Requirements
 
 - Python 3.12.3
-- Anaconda recommended for environment management
+- Anaconda is recommended for environment management
 
 ### ⚙️ Installation Guide
 
 #### Step 1: Download Source Code
 
 ```bash
-# Method 1: Git clone (if you have git)
-git clone https://github.com/yourusername/fluvpy.git
+# Method 1: Clone using git (if you have git installed)
+git clone https://github.com/CommitFromET/fluvpy.git
 cd fluvpy
 
 # Method 2: Direct download (recommended for beginners)
 # 1. Visit the GitHub project page
+https://github.com/CommitFromET/fluvpy
 # 2. Click the green "Code" button
 # 3. Select "Download ZIP"
 # 4. Extract to your desired directory
@@ -73,18 +75,18 @@ cd fluvpy
 #### Step 2: Install Dependencies
 
 ```bash
-# Recommended: Create virtual environment (optional but strongly advised)
-conda create -n fluvpy python=3.8
+# Recommended: Create virtual environment (optional but strongly recommended)
+conda create -n fluvpy python=3.12.3
 conda activate fluvpy
 
-# Or create virtual environment using pip
+# Or use pip to create virtual environment
 python -m venv fluvpy_env
 # Windows activation
 fluvpy_env\Scripts\activate
 # Linux/Mac activation
 source fluvpy_env/bin/activate
 
-# Install all dependency libraries
+# Install all required libraries
 pip install cupy==13.4.0
 pip install matplotlib==3.10.6
 pip install numba==0.60.0
@@ -115,53 +117,52 @@ scipy==1.16.1
 ```
 
 Then execute:
-
 ```bash
 pip install -r requirements.txt
 ```
 
 ## 🎨 Typical Examples
->Click on images to view interactive 3D models (enable VPN if unable to open)
+>Click on images to view interactive 3D models (Please enable VPN if unable to open)
 
 ### Example 1
->Multi-facies model (demonstrates multi-facies model rendering priority in non-migration mode)
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_1.html)
+>Multi-phase model (demonstrates multi-phase model rendering priority in non-migration mode)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_1.html)
 
 ### Example 2
->Channel migration model (demonstrates multi-facies model rendering priority in migration mode)
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_2.html)
+>Channel migration model (demonstrates multi-phase model rendering priority in migration mode)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_2.html)
 
 ### Example 3
->Alluvial fan model (implements alluvial fan simulation through trend control algorithm, zoning control algorithm, and angle settings)
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_3.html)
+>Alluvial fan model (achieves alluvial fan simulation through trend control algorithm, zonal control algorithm, and angle settings)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_3.html)
 
 ### Example 4
->Parallel trend control (implements parallel trend decreasing generation through trend control algorithm, simulating non-stationary images similar to coastal zone sedimentary facies)
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic4.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_4.html)
+>Parallel trend model (achieves parallel trend decline generation through trend control algorithm, simulating non-stationary images similar to coastal sedimentary facies)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic4.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_4.html)
 
 ### Example 5
->Zonal density control — Unidirectional density decrease
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_1.html)
->Zonal density control — Bidirectional density decrease
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_2.html)
->Zonal density control — Z-direction density control
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_3.html)
+>Zonal density control - density decline toward one side
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_1.html)
+>Zonal density control - density decline from center toward both sides
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_2.html)
+>Zonal density control - vertical direction density heterogeneity control
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_3.html)
 
 ### Example 6
->Zonal sinuosity control (unidirectional decreasing trend of sinuosity)
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_1.html)
->Zonal sinuosity control (bidirectional decreasing trend of sinuosity)
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_2.html)
+>Zonal sinuosity control (unidirectional declining trend of sinuosity)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_1.html)
+>Zonal sinuosity control (bidirectional declining trend of sinuosity)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_2.html)
 
 ### Example 7
->Zonal thickness control (unidirectional decreasing trend of thickness)
-[![Fluvpy 3D Fluvial Sedimentary Facies Visualization Example](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic7-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_7_1.html)
+>Zonal thickness control (unidirectional declining trend of thickness)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic7-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_7_1.html)
 
 ## 🛠️ Main Parameters
 
 ### 1. Basic Grid Parameters
 ```python
-# Grid dimensions (determines model resolution)
+# Grid count (determines model resolution)
 'nx': 300,            # Number of grids in X direction (model width direction)
 'ny': 300,            # Number of grids in Y direction (model length direction)
 'nz': 200,            # Number of grids in Z direction (model depth direction)
@@ -171,10 +172,10 @@ pip install -r requirements.txt
 'ly': 3000,           # Physical length in Y direction (model length)
 'lz': 100,            # Physical thickness in Z direction (stratigraphic thickness)
 
-# Origin coordinates (meters)
-'xmn': 0,             # X direction origin coordinate
-'ymn': 0,             # Y direction origin coordinate
-'zmn': 1,             # Z direction origin coordinate
+# Starting coordinates (meters)
+'xmn': 0,             # Starting coordinate in X direction
+'ymn': 0,             # Starting coordinate in Y direction
+'zmn': 1,             # Starting coordinate in Z direction
 ```
 
 ### 2. Simulation Control Parameters
@@ -182,20 +183,17 @@ pip install -r requirements.txt
 ```python
 'seed': 2981325,          # Random seed, controls simulation reproducibility
 'nsim': 1,                # Number of simulation realizations
-'use_gpu': True,          # Whether to use GPU acceleration
-'avgthick': 100,          # Average thickness (meters)
 'mxcc': 20,               # Maximum number of channel complexes
 'mxc': 1,                 # Maximum number of channels per complex
 ```
 
-### 3. Channel Geometric Parameter Distributions
->Channels inherit from complexes. The complex generation in this algorithm is actually used only for spatial positioning. Channel geometric parameters are independent. The model generates channels, so attention must be paid to the setting of all channel geometric parameters.
+### 3. Channel Geometry Parameter Distributions
+>Channels inherit from complexes. The complex generation in this algorithm is actually only used for spatial positioning. Channel geometric parameters are independent. The model generates channels, so attention should be paid to all channel geometric parameter settings.
 ```python
 # Complex parameters (triangular distribution: [minimum, mode, maximum])
 'fcco': [0, 0, 0],              # Complex orientation angle distribution (degrees)
 'fcct': [2, 3, 4],              # Complex thickness distribution (meters)
 'fccwtr': [1.7, 1.7, 1.71],     # Complex width-to-thickness ratio distribution
-'fccntg': [1, 1, 1],            # Complex net-to-gross ratio distribution
 
 # Channel parameters
 'fcat': [2, 3, 4],              # Channel thickness distribution (meters)
@@ -208,19 +206,18 @@ pip install -r requirements.txt
 ```
 
 ### 4. Porosity Parameters
->Range distribution refers to the random fluctuation range based on the baseline value.
+>Range distribution refers to the random fluctuation range based on the base value.
 ```python
-'fcpor_base': [0.1, 0.225, 0.35],        # Channel porosity baseline distribution
+'fcpor_base': [0.1, 0.225, 0.35],        # Channel porosity base value distribution
 'fcpor_range': [0.01, 0.015, 0.02],      # Channel porosity range distribution
 ```
 
 ### 5. Zonal Control Parameters
->Zonal control parameters are as follows. By setting the partition axis, select the direction perpendicular to the partition.
->Individual configuration of multiple parameters can be achieved within each region.
+>Zonal control parameters are as follows. By setting the partition axis, the perpendicular direction of partitioning is selected.
+>Multiple parameters can be independently configured within each region.
 ```python
 'partition_axis': 'x',           # Partition axis ('x' or 'y')
 'num_regions': 3,                # Number of partitions
-
 # Regional control configuration
 'region_configs': {
     0: {  # Region 0 configuration
@@ -232,7 +229,7 @@ pip install -r requirements.txt
         'z_distribution_params': {                   # Regional Z distribution parameters
             'z_distribution_mode': 'custom',         # Regional Z distribution mode - custom
             'z_num_strata': 6,                       # Number of Z partitions
-            'z_custom_weights': [1, 1, 1, 1, 1, 1]   # Weight of each Z layer
+            'z_custom_weights': [1, 1, 1, 1, 1, 1]   # Weights for each Z layer
         }                                            # Regional Z distribution parameters
     },                                               # Regional Z distribution parameters
                                                      # ... Other regional configurations follow the same format
@@ -244,7 +241,7 @@ pip install -r requirements.txt
 'enable_migration': False,              # Enable channel migration simulation
 'migration_steps': 12,                  # Number of migration steps
 'migration_rate': 100,                  # Migration rate
-'cutoff_factor': 1,                     # Meander cutoff factor
+'cutoff_factor': 1,                     # Cutoff factor
 'migration_z_increment': 0,             # Migration Z increment
 
 # Physical parameters
@@ -259,7 +256,6 @@ pip install -r requirements.txt
 ```
 
 ### 7. Vegetation Parameters
-
 ```python
 'vegetation_seed': 3026003,                    # Independent vegetation seed
 'vegetation_enabled': False,                   # Vegetation influence enable flag
@@ -275,15 +271,15 @@ pip install -r requirements.txt
 ### 8. Sedimentary Facies Type Parameters
 
 ```python
-# Natural levee parameters
-'levee_enabled': False,                        # Natural levee enable
-'levee_width_ratio': [3.6, 4.7, 5.0],         # Natural levee width ratio distribution
-'levee_height_ratio': [0.25, 0.29, 0.32],     # Natural levee height ratio distribution
-'levee_depth_ratio': [1.3, 1.5, 1.9],         # Natural levee depth ratio distribution
-'levee_asymmetry': [0.2, 0.5, 0.8],           # Natural levee asymmetry distribution
-'levee_thickness_smoothing_enabled': True,     # Natural levee thickness smoothing enable
-'levee_thickness_smoothing_iterations': 6,     # Natural levee thickness smoothing iterations
-'levee_thickness_smoothing_strength': 0.6,     # Natural levee thickness smoothing strength
+# Levee parameters
+'levee_enabled': False,                        # Levee enable
+'levee_width_ratio': [3.6, 4.7, 5.0],         # Levee width ratio distribution
+'levee_height_ratio': [0.25, 0.29, 0.32],     # Levee height ratio distribution
+'levee_depth_ratio': [1.3, 1.5, 1.9],         # Levee depth ratio distribution
+'levee_asymmetry': [0.2, 0.5, 0.8],           # Levee asymmetry distribution
+'levee_thickness_smoothing_enabled': True,     # Levee thickness smoothing enable
+'levee_thickness_smoothing_iterations': 6,     # Levee thickness smoothing iterations
+'levee_thickness_smoothing_strength': 0.6,     # Levee thickness smoothing strength
 
 # Crevasse splay parameters
 'crevasse_enabled': False,                     # Crevasse splay enable
@@ -299,9 +295,9 @@ pip install -r requirements.txt
 
 ```python
 'enable_river_trends': False,            # Enable channel trend control
-'width_downstream_trend': 3.1,           # Width downstream trend
-'depth_downstream_trend': 0.5,           # Depth downstream trend
-'z_downstream_trend': 0,                 # Z downstream trend
+'width_downstream_trend': 3.1,           # Width downstream trend (controls the ratio of endpoint width to starting point width)
+'depth_downstream_trend': 0.5,           # Depth downstream trend (controls the ratio of endpoint depth to starting point depth)
+'z_downstream_trend': 0,                 # Z value downstream trend
 'width_curvature_factor': 0,             # Width curvature factor
 ```
 
@@ -322,18 +318,18 @@ parser.add_argument('--export-centerlines', action='store_true', default=False,
 parser.add_argument('--export-vegetation', action='store_true', default=True,
                     help='Export vegetation distribution data to CSV files')
 ```
-
 ### 11. Visualization Parameters
 
 ```python
 parser.add_argument('--interactive', action='store_true', default=False, 
                     help='Enable interactive visualization')
 parser.add_argument('--parameter-distribution', action='store_true', default=False, 
-                    help='Generate channel parameter distribution statistics')
+                    help='Generate channel parameter distribution statistics plots')
 parser.add_argument('--visualize-porosity-distribution', action='store_true', default=False,
-                    help='Generate porosity distribution statistics')
+                    help='Generate porosity distribution statistics plots')
 fluvpy_visualize.visualize_fluvpy_3d(results)  # 3D voxel display, showing colors based on channel body ID
 ```
+
 
 ## 🤝 Contributing
 
@@ -343,10 +339,10 @@ Issues and improvement suggestions are welcome!
 
 This project is licensed under the [MIT License](LICENSE)
 
-## 📞 Contact Information
+## 📞 Contact
 
 - **Email**: 1249069981@qq.com/etdaizai@gmail.com
-- **Project Repository**: https://github.com/CommitFromET/fluvpy
+- **Project URL**: https://github.com/CommitFromET/fluvpy
 - **Issue Reporting**: [Issues](https://github.com/commitfromet/fluvpy/issues)
 
 ---
