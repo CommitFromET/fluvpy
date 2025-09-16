@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High-Performance Parallel Binary & JSON Polygon Surface Viewer (Z-Up)</title>
+    <title>Binary & JSON Polygon Surface Viewer (Z-Up)</title>
     <style>
         body {
             margin: 0;
@@ -129,72 +129,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            width: 0%;
-            transition: width 0.3s ease;
-            position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg,
-                transparent 25%,
-                rgba(255,255,255,0.2) 25%,
-                rgba(255,255,255,0.2) 50%,
-                transparent 50%,
-                transparent 75%,
-                rgba(255,255,255,0.2) 75%);
-            background-size: 30px 30px;
-            animation: move 1s linear infinite;
-        }
-
-        @keyframes move {
-            0% { background-position: 0 0; }
-            100% { background-position: 30px 0; }
-        }
-
-        .performance-stats {
-            background: #e8f5e8;
-            border: 1px solid #4caf50;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 15px;
-            font-size: 11px;
-        }
-
-        .performance-stats h3 {
-            margin: 0 0 10px 0;
-            color: #2e7d32;
-            font-size: 13px;
-        }
-
-        .parallel-indicator {
-            display: inline-block;
-            background: #4caf50;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 10px;
-            font-weight: bold;
-            margin-left: 5px;
-        }
-
         .error {
             color: #e74c3c;
             background: #fdf2f2;
@@ -270,6 +204,94 @@
             font-size: 14px;
         }
 
+        .data-source-info {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #e8f4fd;
+            border-radius: 5px;
+            border: 1px solid #bee5eb;
+        }
+
+        .data-source-info h3 {
+            color: #0c5460;
+            margin: 0 0 5px 0;
+        }
+
+        .data-source-info p {
+            margin: 0;
+            font-size: 11px;
+            color: #0c5460;
+        }
+
+        .surface-stats {
+            font-size: 10px;
+            color: #666;
+            margin-left: 4px;
+        }
+
+        .format-indicator {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .format-binary {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .format-json {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .performance-info {
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 11px;
+        }
+
+        .url-list {
+            font-family: monospace;
+            font-size: 10px;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .url-item {
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+
+        .load-status {
+            margin-top: 8px;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .status-loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         .coordinate-info {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
@@ -325,43 +347,14 @@
             color: #2e7d32;
             font-size: 14px;
         }
-
-        .surface-stats {
-            font-size: 10px;
-            color: #666;
-            margin-left: 4px;
-        }
-
-        .format-indicator {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 10px;
-            font-weight: bold;
-            margin-left: 5px;
-        }
-
-        .format-binary {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .format-json {
-            background-color: #007bff;
-            color: white;
-        }
     </style>
 </head>
 <body>
     <div id="container">
         <div id="loading" style="display: block;">
             <div class="loading-spinner"></div>
-            <p>Loading High-Performance 3D Visualization...</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <p><small id="loading-detail">Initializing parallel processing...</small></p>
-            <p><small id="loading-stats">Performance stats will appear here</small></p>
+            <p>Loading 3D visualization from GitHub...</p>
+            <p><small id="loading-detail">Initializing application...</small></p>
         </div>
 
         <div id="controls">
@@ -373,18 +366,25 @@
 
             <div class="github-info" id="github-info">
                 <h3>GitHub Data Source</h3>
-                <p>Repository: <strong>CommitFromET/fluvpy-test-b</strong><span class="parallel-indicator">PARALLEL</span></p>
-                <p>Load Strategy: <span id="load-strategy">Simultaneous multi-CDN loading</span></p>
-                <p>Processing: <span id="processing-status">Web Worker parallel parsing</span></p>
+                <p>Repository: <strong>CommitFromET/fluvpy-test-b</strong></p>
+                <p>CDN Source: <span id="cdn-source">-</span></p>
+                <p>Load Status: <span id="load-status" class="load-status status-loading">Loading...</span></p>
+                <div class="url-list">
+                    <div class="url-item">• raw.githubusercontent.com</div>
+                    <div class="url-item">• cdn.jsdelivr.net</div>
+                </div>
+                <div class="performance-info">
+                    <strong>Auto-loading:</strong><br>
+                    Attempting to load envelope_1.bin from GitHub with CDN fallback
+                </div>
             </div>
 
-            <div class="performance-stats" id="performance-stats" style="display: none;">
-                <h3>Performance Metrics</h3>
-                <div class="stats-item">Network Load: <span id="network-time">-</span></div>
-                <div class="stats-item">Parallel Parse: <span id="parse-time-display">-</span></div>
-                <div class="stats-item">Geometry Creation: <span id="geometry-time">-</span></div>
-                <div class="stats-item">Total Speed-up: <span id="speedup-ratio">-</span></div>
-                <div class="stats-item">Surfaces/sec: <span id="surfaces-per-sec">-</span></div>
+            <div class="control-group data-source-info" style="display: none;" id="data-source-info">
+                <h3>Data Source</h3>
+                <p>File: <span id="current-data-source">-</span>
+                   <span id="file-format" class="format-indicator">-</span></p>
+                <p>Size: <span id="file-size">-</span></p>
+                <p>Load time: <span id="load-time">-</span></p>
             </div>
 
             <div class="control-group scale-control" style="display: none;" id="scale-controls">
@@ -424,7 +424,6 @@
                 <div class="stats-item">Data Type: <span id="data-type">-</span></div>
                 <div class="stats-item">Coordinate System: <strong>Z-Up (Right-handed)</strong></div>
                 <div class="stats-item">Z-Scale: <span id="current-z-scale">1.0x</span></div>
-                <div class="stats-item">Processing Mode: <strong>Parallel<span class="parallel-indicator">FAST</span></strong></div>
             </div>
 
             <div class="stats-section">
@@ -442,12 +441,10 @@
             </div>
 
             <div class="stats-section">
-                <h4>Performance Analysis</h4>
-                <div class="stats-item">Network time: <span id="network-load-time">-</span></div>
+                <h4>Performance</h4>
                 <div class="stats-item">Parsing time: <span id="parse-time">-</span></div>
                 <div class="stats-item">Rendering time: <span id="render-time">-</span></div>
                 <div class="stats-item">Memory usage: <span id="memory-usage">-</span></div>
-                <div class="stats-item">Worker threads: <span id="worker-count">-</span></div>
             </div>
 
             <div class="stats-section">
@@ -473,26 +470,11 @@
             showError('JavaScript Error', e.error.message, e.error.stack);
         });
 
-        // Parallel GitHub URLs for simultaneous loading
+        // GitHub URLs for data loading
         const GITHUB_URLS = [
             'https://raw.githubusercontent.com/CommitFromET/fluvpy/master/web_data/data1.bin',
-            'https://cdn.jsdelivr.net/gh/CommitFromET/fluvpy@master/web_data/data1.bin',
-            'https://gitcdn.xyz/repo/CommitFromET/fluvpy/master/web_data/data1.bin'
+            'https://cdn.jsdelivr.net/gh/CommitFromET/fluvpy@master/web_data/data1.bin'
         ];
-
-        // Performance tracking
-        const performanceMetrics = {
-            networkStart: 0,
-            networkEnd: 0,
-            parseStart: 0,
-            parseEnd: 0,
-            geometryStart: 0,
-            geometryEnd: 0,
-            totalStart: 0,
-            totalEnd: 0,
-            surfacesProcessed: 0,
-            workersUsed: 0
-        };
 
         // Global variables
         let scene, camera, renderer;
@@ -502,34 +484,15 @@
         let dataBounds = null;
         let isMouseDown = false;
         let mouseX = 0, mouseY = 0;
-        let azimuth = 0;
-        let elevation = 0;
+        // Changed to Z-axis up angle variable naming
+        let azimuth = 0;    // Horizontal rotation angle (around Z-axis)
+        let elevation = 0;  // Vertical angle (from XY plane upward)
         let cameraRadius = 1000;
         let debugMode = false;
         let fileMetadata = {};
-        let zScale = 1.0;
-        let axisGroup = null;
-        let gridGroup = null;
-        let parsingWorker = null;
-        let geometryWorkers = [];
-        let maxWorkers = navigator.hardwareConcurrency || 4;
-
-        // Progress tracking
-        let totalSurfaces = 0;
-        let processedSurfaces = 0;
-
-        function updateProgress(current, total, phase = '') {
-            const percent = total > 0 ? Math.round((current / total) * 100) : 0;
-            const progressFill = document.getElementById('progress-fill');
-            if (progressFill) {
-                progressFill.style.width = percent + '%';
-            }
-
-            const loadingDetail = document.getElementById('loading-detail');
-            if (loadingDetail) {
-                loadingDetail.textContent = `${phase} - ${current}/${total} (${percent}%)`;
-            }
-        }
+        let zScale = 1.0;   // Z-axis scale factor
+        let axisGroup = null;  // For coordinate axes
+        let gridGroup = null;  // For grid lines
 
         // Show error message
         function showError(title, message, details = '') {
@@ -557,7 +520,7 @@
             document.getElementById('loading').style.display = 'none';
         }
 
-        // Dynamic Three.js loading function with parallel attempts
+        // Dynamic Three.js loading function
         function loadThreeJS() {
             return new Promise((resolve, reject) => {
                 const cdnUrls = [
@@ -566,34 +529,38 @@
                     'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js'
                 ];
 
-                // Try loading from all URLs simultaneously
-                const promises = cdnUrls.map(url => {
-                    return new Promise((urlResolve, urlReject) => {
-                        const script = document.createElement('script');
-                        script.src = url;
-                        script.onload = () => urlResolve(url);
-                        script.onerror = () => urlReject(new Error(`Failed to load from ${url}`));
-                        document.head.appendChild(script);
-                    });
-                });
+                let currentIndex = 0;
 
-                // Use the first successful load
-                Promise.any(promises)
-                    .then(successUrl => {
-                        console.log(`Three.js loaded successfully from: ${successUrl}`);
-                        resolve();
-                    })
-                    .catch(error => {
-                        console.error('All Three.js CDN sources failed:', error);
+                function tryLoad() {
+                    if (currentIndex >= cdnUrls.length) {
                         reject(new Error('All CDN sources failed to load Three.js'));
-                    });
+                        return;
+                    }
+
+                    const script = document.createElement('script');
+                    script.src = cdnUrls[currentIndex];
+                    script.onload = () => {
+                        console.log(`Three.js loaded from: ${cdnUrls[currentIndex]}`);
+                        resolve();
+                    };
+                    script.onerror = () => {
+                        console.warn(`Failed to load from: ${cdnUrls[currentIndex]}`);
+                        currentIndex++;
+                        tryLoad();
+                    };
+                    document.head.appendChild(script);
+                }
+
+                tryLoad();
             });
         }
 
+        // Check if Three.js is loaded
         function checkThreeJS() {
             return typeof THREE !== 'undefined';
         }
 
+        // Debug logging
         function debugLog(message) {
             console.log('[DEBUG]', message);
             if (debugMode) {
@@ -603,413 +570,6 @@
                     debugContent.scrollTop = debugContent.scrollHeight;
                 }
             }
-        }
-
-        // Web Worker for binary parsing
-        function createParsingWorker() {
-            const workerScript = `
-                class BinaryParser {
-                    constructor(buffer) {
-                        this.buffer = buffer;
-                        this.view = new DataView(buffer);
-                        this.offset = 0;
-                    }
-
-                    readString(length) {
-                        const bytes = new Uint8Array(this.buffer, this.offset, length);
-                        this.offset += length;
-                        let str = '';
-                        for (let i = 0; i < bytes.length && bytes[i] !== 0; i++) {
-                            str += String.fromCharCode(bytes[i]);
-                        }
-                        return str;
-                    }
-
-                    readUint32() {
-                        const value = this.view.getUint32(this.offset, true);
-                        this.offset += 4;
-                        return value;
-                    }
-
-                    readFloat32() {
-                        const value = this.view.getFloat32(this.offset, true);
-                        this.offset += 4;
-                        return value;
-                    }
-
-                    readUint8() {
-                        const value = this.view.getUint8(this.offset);
-                        this.offset += 1;
-                        return value;
-                    }
-                }
-
-                self.onmessage = function(e) {
-                    const { buffer, workerIndex } = e.data;
-                    const startTime = performance.now();
-
-                    try {
-                        const parser = new BinaryParser(buffer);
-
-                        // Read file header
-                        const magic = parser.readString(4);
-                        if (magic !== 'FLVP') {
-                            throw new Error('Invalid binary format: expected FLVP, got ' + magic);
-                        }
-
-                        const version = parser.readUint32();
-                        const realization = parser.readUint32();
-                        const surfaceCount = parser.readUint32();
-
-                        const surfaces = [];
-
-                        // Parse each surface
-                        for (let i = 0; i < surfaceCount; i++) {
-                            // Send progress update
-                            if (i % 10 === 0) {
-                                self.postMessage({
-                                    type: 'progress',
-                                    current: i,
-                                    total: surfaceCount,
-                                    workerIndex: workerIndex
-                                });
-                            }
-
-                            const name = parser.readString(32);
-                            const id = parser.readUint32();
-                            const vertexCount = parser.readUint32();
-                            const faceCount = parser.readUint32();
-
-                            const r = parser.readUint8();
-                            const g = parser.readUint8();
-                            const b = parser.readUint8();
-                            parser.readUint8(); // padding
-                            const color = '#' + r.toString(16).padStart(2, '0') +
-                                         g.toString(16).padStart(2, '0') +
-                                         b.toString(16).padStart(2, '0');
-
-                            // Read vertices in chunks for better performance
-                            const vertices = new Float32Array(vertexCount * 3);
-                            for (let v = 0; v < vertexCount; v++) {
-                                vertices[v * 3] = parser.readFloat32();
-                                vertices[v * 3 + 1] = parser.readFloat32();
-                                vertices[v * 3 + 2] = parser.readFloat32();
-                            }
-
-                            // Read faces
-                            const faces = new Uint32Array(faceCount * 3);
-                            for (let f = 0; f < faceCount; f++) {
-                                faces[f * 3] = parser.readUint32();
-                                faces[f * 3 + 1] = parser.readUint32();
-                                faces[f * 3 + 2] = parser.readUint32();
-                            }
-
-                            surfaces.push({
-                                facies_id: id,
-                                facies_name: name,
-                                color: color,
-                                vertices: vertices,
-                                faces: faces,
-                                statistics: {
-                                    vertex_count: vertexCount,
-                                    face_count: faceCount
-                                }
-                            });
-                        }
-
-                        const parseTime = performance.now() - startTime;
-
-                        self.postMessage({
-                            type: 'complete',
-                            data: {
-                                metadata: {
-                                    realization: realization,
-                                    data_type: "binary_envelope_surfaces",
-                                    format_version: version.toString(),
-                                    total_statistics: {
-                                        total_surfaces: surfaceCount,
-                                        total_vertices: surfaces.reduce((sum, s) => sum + s.statistics.vertex_count, 0),
-                                        total_faces: surfaces.reduce((sum, s) => sum + s.statistics.face_count, 0)
-                                    },
-                                    parse_time_ms: parseTime
-                                },
-                                surfaces: surfaces
-                            },
-                            parseTime: parseTime,
-                            workerIndex: workerIndex
-                        });
-
-                    } catch (error) {
-                        self.postMessage({
-                            type: 'error',
-                            error: error.message,
-                            workerIndex: workerIndex
-                        });
-                    }
-                };
-            `;
-
-            const blob = new Blob([workerScript], { type: 'application/javascript' });
-            return new Worker(URL.createObjectURL(blob));
-        }
-
-        // Parallel data loading from GitHub
-        async function loadGitHubDataParallel() {
-            performanceMetrics.networkStart = performance.now();
-            performanceMetrics.totalStart = performance.now();
-
-            debugLog('Starting parallel network loading from multiple CDNs...');
-
-            // Create promises for all URLs simultaneously
-            const loadPromises = GITHUB_URLS.map((url, index) => {
-                const urlType = url.includes('raw.githubusercontent.com') ? 'GitHub Raw' :
-                               url.includes('cdn.jsdelivr.net') ? 'JSDelivr CDN' :
-                               url.includes('gitcdn.xyz') ? 'GitCDN' : 'Unknown CDN';
-
-                return fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                        }
-                        return response.arrayBuffer().then(buffer => ({
-                            buffer,
-                            url,
-                            urlType,
-                            size: buffer.byteLength
-                        }));
-                    })
-                    .catch(error => {
-                        console.warn(`Failed to load from ${urlType}:`, error.message);
-                        throw { url, urlType, error };
-                    });
-            });
-
-            // Use Promise.allSettled to try all sources simultaneously
-            try {
-                const results = await Promise.allSettled(loadPromises);
-                const successfulResults = results
-                    .filter(result => result.status === 'fulfilled')
-                    .map(result => result.value);
-
-                if (successfulResults.length === 0) {
-                    const errors = results
-                        .filter(result => result.status === 'rejected')
-                        .map(result => result.reason);
-                    throw new Error(`All parallel loads failed: ${errors.map(e => e.error?.message || e.toString()).join(', ')}`);
-                }
-
-                // Use the fastest/first successful result
-                const winner = successfulResults[0];
-                performanceMetrics.networkEnd = performance.now();
-
-                const networkTime = performanceMetrics.networkEnd - performanceMetrics.networkStart;
-                debugLog(`Network loading completed in ${networkTime.toFixed(1)}ms from ${winner.urlType}`);
-
-                // Update UI
-                document.getElementById('load-strategy').textContent = `Won: ${winner.urlType} (${successfulResults.length}/${GITHUB_URLS.length} succeeded)`;
-                document.getElementById('network-time').textContent = `${networkTime.toFixed(1)}ms`;
-
-                fileMetadata = {
-                    name: 'envelope_1.bin',
-                    size: winner.buffer.byteLength,
-                    type: 'binary',
-                    loadTime: networkTime,
-                    source: winner.urlType,
-                    url: winner.url
-                };
-
-                return winner.buffer;
-
-            } catch (error) {
-                performanceMetrics.networkEnd = performance.now();
-                throw error;
-            }
-        }
-
-        // Parallel binary parsing using Web Worker
-        async function parseBinaryParallel(buffer) {
-            performanceMetrics.parseStart = performance.now();
-
-            return new Promise((resolve, reject) => {
-                if (!parsingWorker) {
-                    parsingWorker = createParsingWorker();
-                    performanceMetrics.workersUsed++;
-                }
-
-                let progressInterval;
-
-                parsingWorker.onmessage = function(e) {
-                    const { type, data, parseTime, current, total, error } = e.data;
-
-                    switch (type) {
-                        case 'progress':
-                            updateProgress(current, total, 'Parsing surfaces in parallel');
-                            const loadingStats = document.getElementById('loading-stats');
-                            if (loadingStats) {
-                                const elapsed = performance.now() - performanceMetrics.parseStart;
-                                const rate = current > 0 ? (current / (elapsed / 1000)).toFixed(1) : '0';
-                                loadingStats.textContent = `Parsing rate: ${rate} surfaces/sec | Worker processing...`;
-                            }
-                            break;
-
-                        case 'complete':
-                            clearInterval(progressInterval);
-                            performanceMetrics.parseEnd = performance.now();
-                            performanceMetrics.surfacesProcessed = data.surfaces.length;
-
-                            const totalParseTime = performanceMetrics.parseEnd - performanceMetrics.parseStart;
-                            debugLog(`Parallel parsing completed in ${totalParseTime.toFixed(1)}ms`);
-
-                            // Update performance display
-                            document.getElementById('parse-time-display').textContent = `${totalParseTime.toFixed(1)}ms`;
-                            const surfacesPerSec = (data.surfaces.length / (totalParseTime / 1000)).toFixed(1);
-                            document.getElementById('surfaces-per-sec').textContent = surfacesPerSec;
-
-                            resolve(data);
-                            break;
-
-                        case 'error':
-                            clearInterval(progressInterval);
-                            performanceMetrics.parseEnd = performance.now();
-                            reject(new Error(`Worker parsing failed: ${error}`));
-                            break;
-                    }
-                };
-
-                parsingWorker.onerror = function(error) {
-                    clearInterval(progressInterval);
-                    performanceMetrics.parseEnd = performance.now();
-                    reject(new Error(`Worker error: ${error.message}`));
-                };
-
-                // Start parsing in worker
-                parsingWorker.postMessage({ buffer: buffer, workerIndex: 0 });
-
-                // Timeout fallback
-                setTimeout(() => {
-                    if (performanceMetrics.parseEnd === 0) {
-                        reject(new Error('Worker parsing timeout'));
-                    }
-                }, 30000);
-            });
-        }
-
-        // Parallel geometry creation
-        async function createGeometryParallel(surfaces) {
-            performanceMetrics.geometryStart = performance.now();
-
-            debugLog(`Creating geometries for ${surfaces.length} surfaces in parallel...`);
-
-            // Process surfaces in batches for better performance
-            const batchSize = Math.max(1, Math.floor(surfaces.length / maxWorkers));
-            const promises = [];
-
-            for (let i = 0; i < surfaces.length; i += batchSize) {
-                const batch = surfaces.slice(i, Math.min(i + batchSize, surfaces.length));
-                promises.push(processSurfaceBatch(batch, i));
-            }
-
-            await Promise.all(promises);
-
-            performanceMetrics.geometryEnd = performance.now();
-            const geometryTime = performanceMetrics.geometryEnd - performanceMetrics.geometryStart;
-            debugLog(`Parallel geometry creation completed in ${geometryTime.toFixed(1)}ms`);
-
-            document.getElementById('geometry-time').textContent = `${geometryTime.toFixed(1)}ms`;
-        }
-
-        async function processSurfaceBatch(surfaces, startIndex) {
-            return new Promise((resolve) => {
-                // Use requestAnimationFrame for non-blocking processing
-                let currentIndex = 0;
-
-                function processNext() {
-                    const batchStart = performance.now();
-                    let processed = 0;
-
-                    // Process multiple surfaces per frame
-                    while (currentIndex < surfaces.length && processed < 5) {
-                        const surface = surfaces[currentIndex];
-                        createSurfaceFromDataFast(surface);
-                        currentIndex++;
-                        processed++;
-
-                        // Limit processing time per frame
-                        if (performance.now() - batchStart > 16) break; // ~60fps
-                    }
-
-                    // Update progress
-                    const globalProgress = startIndex + currentIndex;
-                    updateProgress(globalProgress, polygonData.surfaces.length, 'Creating 3D geometries');
-
-                    if (currentIndex < surfaces.length) {
-                        requestAnimationFrame(processNext);
-                    } else {
-                        resolve();
-                    }
-                }
-
-                processNext();
-            });
-        }
-
-        // Optimized fast surface creation
-        function createSurfaceFromDataFast(surfaceData) {
-            const { facies_name, vertices, faces, color } = surfaceData;
-
-            // Create geometry with pre-allocated arrays
-            const geometry = new THREE.BufferGeometry();
-
-            // Use vertices array directly if it's already Float32Array
-            let verticesArray;
-            if (vertices instanceof Float32Array) {
-                verticesArray = vertices;
-            } else {
-                verticesArray = new Float32Array(vertices.length * 3);
-                for (let i = 0; i < vertices.length; i++) {
-                    const v = vertices[i];
-                    verticesArray[i * 3] = v[0];
-                    verticesArray[i * 3 + 1] = v[1];
-                    verticesArray[i * 3 + 2] = v[2];
-                }
-            }
-
-            // Use faces array directly if it's already Uint32Array
-            let indicesArray;
-            if (faces instanceof Uint32Array) {
-                indicesArray = faces;
-            } else {
-                indicesArray = new Uint32Array(faces.length * 3);
-                for (let i = 0; i < faces.length; i++) {
-                    const f = faces[i];
-                    indicesArray[i * 3] = f[0];
-                    indicesArray[i * 3 + 1] = f[1];
-                    indicesArray[i * 3 + 2] = f[2];
-                }
-            }
-
-            geometry.setAttribute('position', new THREE.BufferAttribute(verticesArray, 3));
-            geometry.setIndex(new THREE.BufferAttribute(indicesArray, 1));
-            geometry.computeVertexNormals();
-
-            // Create material
-            const material = new THREE.MeshLambertMaterial({
-                color: color,
-                side: THREE.DoubleSide,
-                transparent: false,
-                opacity: 1.0
-            });
-
-            // Create mesh
-            const mesh = new THREE.Mesh(geometry, material);
-
-            // Create group
-            const group = new THREE.Group();
-            group.add(mesh);
-            group.name = facies_name;
-
-            surfaceGroups[facies_name] = group;
-            scene.add(group);
         }
 
         // Z-scale control functions
@@ -1042,6 +602,7 @@
                 group.scale.z = zScale;
             });
 
+            // Update coordinate axes with new scale
             if (axisGroup) {
                 updateCoordinateAxes();
             }
@@ -1063,13 +624,14 @@
                 throw new Error('Missing or invalid surfaces array');
             }
 
+            // Validate each surface
             for (let i = 0; i < data.surfaces.length; i++) {
                 const surface = data.surfaces[i];
-                if (!surface.vertices) {
-                    throw new Error(`Surface ${i}: missing vertices`);
+                if (!surface.vertices || !Array.isArray(surface.vertices)) {
+                    throw new Error(`Surface ${i}: missing or invalid vertices array`);
                 }
-                if (!surface.faces) {
-                    throw new Error(`Surface ${i}: missing faces`);
+                if (!surface.faces || !Array.isArray(surface.faces)) {
+                    throw new Error(`Surface ${i}: missing or invalid faces array`);
                 }
                 if (!surface.facies_name) {
                     throw new Error(`Surface ${i}: missing facies_name`);
@@ -1087,42 +649,28 @@
             let minZ = Infinity, maxZ = -Infinity;
 
             data.surfaces.forEach(surface => {
-                const vertices = surface.vertices;
-
-                if (vertices instanceof Float32Array) {
-                    for (let i = 0; i < vertices.length; i += 3) {
-                        const x = vertices[i];
-                        const y = vertices[i + 1];
-                        const z = vertices[i + 2];
-                        minX = Math.min(minX, x);
-                        maxX = Math.max(maxX, x);
-                        minY = Math.min(minY, y);
-                        maxY = Math.max(maxY, y);
-                        minZ = Math.min(minZ, z);
-                        maxZ = Math.max(maxZ, z);
-                    }
-                } else {
-                    vertices.forEach(vertex => {
-                        const [x, y, z] = vertex;
-                        minX = Math.min(minX, x);
-                        maxX = Math.max(maxX, x);
-                        minY = Math.min(minY, y);
-                        maxY = Math.max(maxY, y);
-                        minZ = Math.min(minZ, z);
-                        maxZ = Math.max(maxZ, z);
-                    });
-                }
+                surface.vertices.forEach(vertex => {
+                    const [x, y, z] = vertex;
+                    minX = Math.min(minX, x);
+                    maxX = Math.max(maxX, x);
+                    minY = Math.min(minY, y);
+                    maxY = Math.max(maxY, y);
+                    minZ = Math.min(minZ, z);
+                    maxZ = Math.max(maxZ, z);
+                });
             });
 
-            data.metadata.global_bounds = {
-                min: { x: minX, y: minY, z: minZ },
-                max: { x: maxX, y: maxY, z: maxZ },
-                size: {
-                    x: maxX - minX,
-                    y: maxY - minY,
-                    z: maxZ - minZ
-                }
-            };
+            if (!data.metadata.global_bounds) {
+                data.metadata.global_bounds = {
+                    min: { x: minX, y: minY, z: minZ },
+                    max: { x: maxX, y: maxY, z: maxZ },
+                    size: {
+                        x: maxX - minX,
+                        y: maxY - minY,
+                        z: maxZ - minZ
+                    }
+                };
+            }
 
             debugLog(`Global bounds calculated: ${JSON.stringify(data.metadata.global_bounds.size)}`);
         }
@@ -1177,21 +725,8 @@
             }
 
             // Performance info
-            const networkTime = performanceMetrics.networkEnd - performanceMetrics.networkStart;
-            const parseTime = performanceMetrics.parseEnd - performanceMetrics.parseStart;
-            const geometryTime = performanceMetrics.geometryEnd - performanceMetrics.geometryStart;
-            const totalTime = performanceMetrics.totalEnd - performanceMetrics.totalStart;
-
-            document.getElementById('network-load-time').textContent = `${networkTime.toFixed(1)}ms`;
-            document.getElementById('parse-time').textContent = `${parseTime.toFixed(1)}ms`;
-            document.getElementById('render-time').textContent = `${geometryTime.toFixed(1)}ms`;
-            document.getElementById('worker-count').textContent = `${performanceMetrics.workersUsed}`;
-
-            // Calculate speedup ratio (compared to estimated sequential time)
-            const estimatedSequentialTime = networkTime + parseTime + geometryTime;
-            const actualParallelTime = Math.max(networkTime, parseTime) + geometryTime;
-            const speedupRatio = (estimatedSequentialTime / actualParallelTime).toFixed(1);
-            document.getElementById('speedup-ratio').textContent = `${speedupRatio}x faster`;
+            document.getElementById('parse-time').textContent = meta.parse_time_ms ? `${meta.parse_time_ms.toFixed(1)}ms` : '-';
+            document.getElementById('render-time').textContent = fileMetadata.renderTime ? `${fileMetadata.renderTime.toFixed(1)}ms` : '-';
 
             // Estimate memory usage
             const totalVertices = stats.total_vertices || 0;
@@ -1208,6 +743,13 @@
                 div.innerHTML = `${surface.facies_name}: ${surface.statistics.vertex_count.toLocaleString()} vertices, ${surface.statistics.face_count.toLocaleString()} faces`;
                 detailsDiv.appendChild(div);
             });
+
+            // Update file info
+            document.getElementById('current-data-source').textContent = `${fileMetadata.name} (${fileMetadata.source})`;
+            document.getElementById('file-format').textContent = fileMetadata.type.toUpperCase();
+            document.getElementById('file-format').className = `format-indicator format-${fileMetadata.type}`;
+            document.getElementById('file-size').textContent = `${(fileMetadata.size / 1024 / 1024).toFixed(2)} MB`;
+            document.getElementById('load-time').textContent = `${fileMetadata.loadTime.toFixed(0)}ms`;
         }
 
         // Create visibility controls
@@ -1328,8 +870,11 @@
             const deltaX = event.clientX - mouseX;
             const deltaY = event.clientY - mouseY;
 
-            azimuth += deltaX * 0.01;
-            elevation -= deltaY * 0.01;
+            // Updated for Z-axis up angle control
+            azimuth += deltaX * 0.01;  // Horizontal rotation (around Z-axis)
+            elevation -= deltaY * 0.01; // Vertical rotation (elevation angle)
+
+            // Limit elevation range (-90° to +90°)
             elevation = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, elevation));
 
             updateCameraPosition();
@@ -1350,6 +895,7 @@
             event.preventDefault();
         }
 
+        // Modified for Z-axis up camera position calculation
         function updateCameraPosition() {
             if (!dataBounds) return;
 
@@ -1357,19 +903,25 @@
             const centerY = dataBounds.center.y;
             const centerZ = dataBounds.center.z;
 
+            // Z-axis up spherical coordinate system
+            // elevation: angle from XY plane upward (-π/2 to π/2)
+            // azimuth: horizontal rotation around Z-axis
             camera.position.x = centerX + cameraRadius * Math.cos(elevation) * Math.cos(azimuth);
             camera.position.y = centerY + cameraRadius * Math.cos(elevation) * Math.sin(azimuth);
             camera.position.z = centerZ + cameraRadius * Math.sin(elevation);
 
             camera.lookAt(centerX, centerY, centerZ);
+
+            // Set camera's up vector to positive Z-axis
             camera.up.set(0, 0, 1);
         }
 
-        // Create 3D visualization with parallel processing
-        async function createVisualization() {
+        // Create 3D visualization
+        function createVisualization() {
             if (!polygonData) return;
 
-            debugLog('Creating 3D visualization with parallel processing...');
+            const renderStart = performance.now();
+            debugLog('Creating 3D visualization from surface data...');
 
             // Clear existing surfaces
             Object.values(surfaceGroups).forEach(group => {
@@ -1377,8 +929,10 @@
             });
             surfaceGroups = {};
 
-            // Create surfaces in parallel
-            await createGeometryParallel(polygonData.surfaces);
+            // Create surfaces
+            polygonData.surfaces.forEach(surfaceData => {
+                createSurfaceFromData(surfaceData);
+            });
 
             calculateGlobalBounds(polygonData);
             updateDataBounds();
@@ -1387,18 +941,69 @@
             createVisibilityControls();
             updateInfoPanel();
 
+            fileMetadata.renderTime = performance.now() - renderStart;
+
             // Show UI elements
+            document.getElementById('data-source-info').style.display = 'block';
             document.getElementById('scale-controls').style.display = 'block';
             document.getElementById('view-controls').style.display = 'block';
             document.getElementById('info').style.display = 'block';
-            document.getElementById('performance-stats').style.display = 'block';
 
-            performanceMetrics.totalEnd = performance.now();
-            const totalTime = performanceMetrics.totalEnd - performanceMetrics.totalStart;
-            debugLog(`Complete parallel visualization created in ${totalTime.toFixed(1)}ms`);
+            debugLog('3D visualization created successfully');
         }
 
-        // Camera view functions
+        // Create surface mesh from data
+        function createSurfaceFromData(surfaceData) {
+            const { facies_name, vertices, faces, color } = surfaceData;
+
+            debugLog(`Creating surface: ${facies_name} with ${vertices.length} vertices, ${faces.length} faces`);
+
+            // Create geometry
+            const geometry = new THREE.BufferGeometry();
+
+            // Convert vertices to Float32Array
+            const verticesArray = new Float32Array(vertices.length * 3);
+            for (let i = 0; i < vertices.length; i++) {
+                verticesArray[i * 3] = vertices[i][0];
+                verticesArray[i * 3 + 1] = vertices[i][1];
+                verticesArray[i * 3 + 2] = vertices[i][2];
+            }
+
+            // Convert faces to indices array
+            const indicesArray = new Uint32Array(faces.length * 3);
+            for (let i = 0; i < faces.length; i++) {
+                indicesArray[i * 3] = faces[i][0];
+                indicesArray[i * 3 + 1] = faces[i][1];
+                indicesArray[i * 3 + 2] = faces[i][2];
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(verticesArray, 3));
+            geometry.setIndex(new THREE.BufferAttribute(indicesArray, 1));
+            geometry.computeVertexNormals();
+
+            // Create material
+            const material = new THREE.MeshLambertMaterial({
+                color: color,
+                side: THREE.DoubleSide,
+                transparent: false,
+                opacity: 1.0
+            });
+
+            // Create mesh
+            const mesh = new THREE.Mesh(geometry, material);
+
+            // Create group for this surface
+            const group = new THREE.Group();
+            group.add(mesh);
+            group.name = facies_name;
+
+            surfaceGroups[facies_name] = group;
+            scene.add(group);
+
+            debugLog(`Surface ${facies_name} created successfully`);
+        }
+
+
         function resetCamera() {
             if (!dataBounds) return;
             azimuth = Math.PI / 4;
@@ -1414,6 +1019,7 @@
             elevation = Math.PI / 2 - 0.1;
             cameraRadius = Math.max(dataBounds.size.x, dataBounds.size.y) * 1.2;
             updateCameraPosition();
+            debugLog('Camera set to top view (Z+)');
         }
 
         function bottomView() {
@@ -1422,6 +1028,7 @@
             elevation = -Math.PI / 2 + 0.1;
             cameraRadius = Math.max(dataBounds.size.x, dataBounds.size.y) * 1.2;
             updateCameraPosition();
+            debugLog('Camera set to bottom view (Z-)');
         }
 
         function sideView() {
@@ -1430,14 +1037,16 @@
             elevation = 0;
             cameraRadius = Math.max(dataBounds.size.x, dataBounds.size.z) * 1.5;
             updateCameraPosition();
+            debugLog('Camera set to side view (Y+)');
         }
 
         function frontView() {
             if (!dataBounds) return;
-            azimuth = 0;
-            elevation = 0;
+            azimuth = 0;   // 0 degrees, looking along positive X direction
+            elevation = 0; // horizontal
             cameraRadius = Math.max(dataBounds.size.y, dataBounds.size.z) * 1.5;
             updateCameraPosition();
+            debugLog('Camera set to front view (X+)');
         }
 
         function backView() {
@@ -1446,6 +1055,7 @@
             elevation = 0;
             cameraRadius = Math.max(dataBounds.size.y, dataBounds.size.z) * 1.5;
             updateCameraPosition();
+            debugLog('Camera set to back view (X-)');
         }
 
         // Create text texture
@@ -1472,10 +1082,11 @@
             return texture;
         }
 
-        // Enhanced coordinate axis display for Z-axis up
+        // Enhanced coordinate axis display for Z-axis up with detailed labeling
         function addCoordinateHelpers() {
             if (!dataBounds) return;
 
+            // Remove existing axis group if it exists
             if (axisGroup) {
                 scene.remove(axisGroup);
             }
@@ -1491,19 +1102,20 @@
             const arrowLength = axisLength * 0.1;
             const arrowRadius = axisLength * 0.02;
 
+            // Origin set at data bottom center
             const origin = {
                 x: bounds.center.x,
                 y: bounds.center.y,
                 z: bounds.min.z - bounds.size.z * 0.1
             };
 
-            // X-axis (red)
+            // X-axis (red) - East-West direction
             const xAxisGroup = new THREE.Group();
             const xGeometry = new THREE.CylinderGeometry(axisLength * 0.005, axisLength * 0.005, axisLength, 8);
             const xMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
             const xAxis = new THREE.Mesh(xGeometry, xMaterial);
             xAxis.position.set(origin.x + axisLength / 2, origin.y, origin.z);
-            xAxis.rotation.z = -Math.PI / 2;
+            xAxis.rotation.z = -Math.PI / 2;  // horizontal direction
             xAxisGroup.add(xAxis);
 
             const xArrowGeometry = new THREE.ConeGeometry(arrowRadius, arrowLength, 8);
@@ -1519,15 +1131,44 @@
             xLabel.scale.set(axisLength * 0.4, axisLength * 0.2, 1);
             xAxisGroup.add(xLabel);
 
+            // Add X-axis coordinate values
+            const xSteps = 5;
+            const xStepSize = bounds.size.x / xSteps;
+            for (let i = 0; i <= xSteps; i++) {
+                const xValue = bounds.min.x + i * xStepSize;
+                const xPos = origin.x + (xValue - bounds.center.x);
+
+                if (Math.abs(xValue - bounds.center.x) > bounds.size.x * 0.1) { // Skip center value to avoid overlap
+                    // Grid line
+                    const gridGeometry = new THREE.BufferGeometry();
+                    const gridVertices = new Float32Array([
+                        xPos, bounds.min.y, origin.z,
+                        xPos, bounds.max.y, origin.z
+                    ]);
+                    gridGeometry.setAttribute('position', new THREE.BufferAttribute(gridVertices, 3));
+                    const gridMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc, opacity: 0.3, transparent: true });
+                    const gridLine = new THREE.Line(gridGeometry, gridMaterial);
+                    gridGroup.add(gridLine);
+                }
+
+                // Value label
+                const valueTexture = createTextTexture(xValue.toFixed(0), 24, '#666666');
+                const valueMaterial = new THREE.SpriteMaterial({ map: valueTexture });
+                const valueLabel = new THREE.Sprite(valueMaterial);
+                valueLabel.position.set(xPos, origin.y - bounds.size.y * 0.1, origin.z);
+                valueLabel.scale.set(axisLength * 0.2, axisLength * 0.1, 1);
+                xAxisGroup.add(valueLabel);
+            }
+
             axisGroup.add(xAxisGroup);
 
-            // Y-axis (green)
+            // Y-axis (green) - North-South direction
             const yAxisGroup = new THREE.Group();
             const yGeometry = new THREE.CylinderGeometry(axisLength * 0.005, axisLength * 0.005, axisLength, 8);
             const yMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
             const yAxis = new THREE.Mesh(yGeometry, yMaterial);
             yAxis.position.set(origin.x, origin.y + axisLength / 2, origin.z);
-            yAxis.rotation.x = Math.PI / 2;
+            yAxis.rotation.x = Math.PI / 2;  // along Y direction
             yAxisGroup.add(yAxis);
 
             const yArrowGeometry = new THREE.ConeGeometry(arrowRadius, arrowLength, 8);
@@ -1543,14 +1184,44 @@
             yLabel.scale.set(axisLength * 0.4, axisLength * 0.2, 1);
             yAxisGroup.add(yLabel);
 
+            // Add Y-axis coordinate values
+            const ySteps = 5;
+            const yStepSize = bounds.size.y / ySteps;
+            for (let i = 0; i <= ySteps; i++) {
+                const yValue = bounds.min.y + i * yStepSize;
+                const yPos = origin.y + (yValue - bounds.center.y);
+
+                if (Math.abs(yValue - bounds.center.y) > bounds.size.y * 0.1) {
+                    // Grid line
+                    const gridGeometry = new THREE.BufferGeometry();
+                    const gridVertices = new Float32Array([
+                        bounds.min.x, yPos, origin.z,
+                        bounds.max.x, yPos, origin.z
+                    ]);
+                    gridGeometry.setAttribute('position', new THREE.BufferAttribute(gridVertices, 3));
+                    const gridMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc, opacity: 0.3, transparent: true });
+                    const gridLine = new THREE.Line(gridGeometry, gridMaterial);
+                    gridGroup.add(gridLine);
+                }
+
+                // Value label
+                const valueTexture = createTextTexture(yValue.toFixed(0), 24, '#666666');
+                const valueMaterial = new THREE.SpriteMaterial({ map: valueTexture });
+                const valueLabel = new THREE.Sprite(valueMaterial);
+                valueLabel.position.set(origin.x - bounds.size.x * 0.1, yPos, origin.z);
+                valueLabel.scale.set(axisLength * 0.2, axisLength * 0.1, 1);
+                yAxisGroup.add(valueLabel);
+            }
+
             axisGroup.add(yAxisGroup);
 
-            // Z-axis (blue)
+            // Z-axis (blue) - Vertical up
             const zAxisGroup = new THREE.Group();
             const zGeometry = new THREE.CylinderGeometry(axisLength * 0.005, axisLength * 0.005, axisLength, 8);
             const zMaterial = new THREE.MeshLambertMaterial({ color: 0x0000ff });
             const zAxis = new THREE.Mesh(zGeometry, zMaterial);
             zAxis.position.set(origin.x, origin.y, origin.z + axisLength / 2);
+            // Z-axis doesn't need rotation, it's already vertical
             zAxisGroup.add(zAxis);
 
             const zArrowGeometry = new THREE.ConeGeometry(arrowRadius, arrowLength, 8);
@@ -1565,16 +1236,34 @@
             zLabel.scale.set(axisLength * 0.4, axisLength * 0.2, 1);
             zAxisGroup.add(zLabel);
 
+            // Add Z-axis coordinate values
+            const zSteps = 5;
+            const zStepSize = bounds.size.z / zSteps;
+            for (let i = 0; i <= zSteps; i++) {
+                const zValue = bounds.min.z + i * zStepSize;
+                const zPos = origin.z + (zValue - origin.z) + bounds.size.z * 0.1 + (i * zStepSize);
+
+                // Value label
+                const valueTexture = createTextTexture(zValue.toFixed(0), 24, '#666666');
+                const valueMaterial = new THREE.SpriteMaterial({ map: valueTexture });
+                const valueLabel = new THREE.Sprite(valueMaterial);
+                valueLabel.position.set(origin.x + bounds.size.x * 0.1, origin.y, zPos);
+                valueLabel.scale.set(axisLength * 0.2, axisLength * 0.1, 1);
+                zAxisGroup.add(valueLabel);
+            }
+
             axisGroup.add(zAxisGroup);
 
             scene.add(axisGroup);
             scene.add(gridGroup);
 
-            debugLog('Added coordinate axes with Z-up orientation');
+            debugLog('Added detailed coordinate axes with Z-up orientation and value labels');
         }
 
+        // Update coordinate axes when Z-scale changes
         function updateCoordinateAxes() {
-            // Axes don't scale, surfaces do
+            // The axes themselves don't scale, but we need to update Z-value labels
+            // This is handled by the applyZScale function which updates the surface groups
         }
 
         function toggleWireframe() {
@@ -1595,7 +1284,7 @@
             debugPanel.style.display = debugMode ? 'block' : 'none';
 
             if (debugMode) {
-                document.getElementById('debug-content').innerHTML = 'Debug mode enabled (Parallel Processing)<br>';
+                document.getElementById('debug-content').innerHTML = 'Debug mode enabled (Z-up coordinate system)<br>';
                 debugLog('Debug panel opened');
             }
         }
@@ -1611,13 +1300,12 @@
             renderer.render(scene, camera);
         }
 
-        // Main initialization function with parallel processing
+        // Main initialization function
         async function initApp() {
             try {
-                console.log('Initializing High-Performance Binary Polygon Surface Viewer...');
-                console.log(`System info: ${navigator.hardwareConcurrency || 'unknown'} CPU cores`);
+                console.log('Initializing Binary Polygon Surface Viewer with Z-up coordinate system...');
 
-                document.getElementById('loading-detail').textContent = 'Loading Three.js library in parallel...';
+                document.getElementById('loading-detail').textContent = 'Loading Three.js library...';
 
                 if (!checkThreeJS()) {
                     await loadThreeJS();
@@ -1635,58 +1323,231 @@
                 // Start animation loop
                 animate();
 
-                // Load and process data with parallel optimization
-                document.getElementById('loading-detail').textContent = 'Loading surface data from multiple CDNs simultaneously...';
-                document.getElementById('processing-status').textContent = 'Parallel network loading active';
+                // Load data from GitHub
+                document.getElementById('loading-detail').textContent = 'Loading surface data from GitHub...';
+                const data = await loadGitHubData();
 
-                const buffer = await loadGitHubDataParallel();
+                document.getElementById('loading-detail').textContent = 'Processing surface data...';
+                polygonData = data;
 
-                document.getElementById('loading-detail').textContent = 'Processing surface data with Web Worker...';
-                document.getElementById('processing-status').textContent = 'Web Worker parsing in background';
-
-                polygonData = await parseBinaryParallel(buffer);
-
-                document.getElementById('loading-detail').textContent = 'Creating 3D visualization with parallel geometry processing...';
-                document.getElementById('processing-status').textContent = 'Parallel geometry creation active';
-
-                await createVisualization();
+                document.getElementById('loading-detail').textContent = 'Creating 3D visualization...';
+                createVisualization();
 
                 // Hide loading indicator
                 document.getElementById('loading').style.display = 'none';
 
-                // Final performance summary
-                const totalTime = performanceMetrics.totalEnd - performanceMetrics.totalStart;
-                const networkTime = performanceMetrics.networkEnd - performanceMetrics.networkStart;
-                const parseTime = performanceMetrics.parseEnd - performanceMetrics.parseStart;
-                const geometryTime = performanceMetrics.geometryEnd - performanceMetrics.geometryStart;
-
-                console.log(`🚀 Parallel Processing Performance Summary:`);
-                console.log(`├─ Total Time: ${totalTime.toFixed(1)}ms`);
-                console.log(`├─ Network Load: ${networkTime.toFixed(1)}ms (parallel CDN)`);
-                console.log(`├─ Data Parsing: ${parseTime.toFixed(1)}ms (Web Worker)`);
-                console.log(`├─ Geometry Creation: ${geometryTime.toFixed(1)}ms (batched)`);
-                console.log(`├─ Surfaces Processed: ${performanceMetrics.surfacesProcessed}`);
-                console.log(`├─ Workers Used: ${performanceMetrics.workersUsed}`);
-                console.log(`└─ Processing Rate: ${(performanceMetrics.surfacesProcessed / (totalTime / 1000)).toFixed(1)} surfaces/sec`);
-
-                debugLog('High-performance parallel application initialized successfully');
+                debugLog('Application initialized successfully with Z-up coordinate system');
 
             } catch (error) {
                 console.error('Initialization failed:', error);
-                showError('Parallel Loading Failed', error.message, error.stack);
+                showError('GitHub Loading Failed', error.message, error.stack);
             }
         }
 
-        // Cleanup function
-        window.addEventListener('beforeunload', function() {
-            if (parsingWorker) {
-                parsingWorker.terminate();
-            }
-            geometryWorkers.forEach(worker => worker.terminate());
-        });
-
         // Start application
         window.addEventListener('load', initApp);
+
+        // ============= FILE IMPORT CODE (MOVED TO END) =============
+
+        // Load data from GitHub URLs
+        async function loadGitHubData() {
+            const loadStartTime = performance.now();
+            let lastError = null;
+
+            for (let i = 0; i < GITHUB_URLS.length; i++) {
+                const url = GITHUB_URLS[i];
+                const urlType = url.includes('raw.githubusercontent.com') ? 'GitHub Raw' : 'JSDelivr CDN';
+
+                try {
+                    debugLog(`Attempting to load from ${urlType}: ${url}`);
+                    document.getElementById('loading-detail').textContent = `Loading from ${urlType}...`;
+                    document.getElementById('cdn-source').textContent = urlType;
+
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const buffer = await response.arrayBuffer();
+                    const loadTime = performance.now() - loadStartTime;
+
+                    fileMetadata = {
+                        name: 'envelope_1.bin',
+                        size: buffer.byteLength,
+                        type: 'binary',
+                        loadStartTime: loadStartTime,
+                        loadTime: loadTime,
+                        source: urlType,
+                        url: url
+                    };
+
+                    debugLog(`Successfully loaded ${(buffer.byteLength / 1024 / 1024).toFixed(2)} MB from ${urlType}`);
+
+                    document.getElementById('loading-detail').textContent = 'Parsing binary data...';
+                    const data = parseBinaryFile(buffer);
+
+                    document.getElementById('loading-detail').textContent = 'Validating data structure...';
+                    validateData(data);
+
+                    // Update load status
+                    const statusElement = document.getElementById('load-status');
+                    statusElement.textContent = `Loaded from ${urlType}`;
+                    statusElement.className = 'load-status status-success';
+
+                    return data;
+
+                } catch (error) {
+                    lastError = error;
+                    console.warn(`Failed to load from ${urlType}:`, error.message);
+
+                    // Update load status for failed attempt
+                    const statusElement = document.getElementById('load-status');
+                    statusElement.textContent = `Failed: ${urlType}`;
+                    statusElement.className = 'load-status status-error';
+
+                    // If this isn't the last URL, continue to next
+                    if (i < GITHUB_URLS.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // Brief delay between attempts
+                        continue;
+                    }
+                }
+            }
+
+            // If we get here, all URLs failed
+            throw new Error(`Failed to load from all GitHub sources. Last error: ${lastError?.message || 'Unknown error'}`);
+        }
+
+        // Binary file parser
+        class BinaryParser {
+            constructor(buffer) {
+                this.buffer = buffer;
+                this.view = new DataView(buffer);
+                this.offset = 0;
+            }
+
+            readString(length) {
+                const bytes = new Uint8Array(this.buffer, this.offset, length);
+                this.offset += length;
+                // Find null terminator and decode
+                let str = '';
+                for (let i = 0; i < bytes.length && bytes[i] !== 0; i++) {
+                    str += String.fromCharCode(bytes[i]);
+                }
+                return str;
+            }
+
+            readUint32() {
+                const value = this.view.getUint32(this.offset, true); // little endian
+                this.offset += 4;
+                return value;
+            }
+
+            readFloat32() {
+                const value = this.view.getFloat32(this.offset, true); // little endian
+                this.offset += 4;
+                return value;
+            }
+
+            readUint8() {
+                const value = this.view.getUint8(this.offset);
+                this.offset += 1;
+                return value;
+            }
+
+            readBytes(length) {
+                const bytes = new Uint8Array(this.buffer, this.offset, length);
+                this.offset += length;
+                return bytes;
+            }
+        }
+
+        // Parse binary file
+        function parseBinaryFile(buffer) {
+            const startTime = performance.now();
+            const parser = new BinaryParser(buffer);
+
+            // Read file header
+            const magic = parser.readString(4);
+            if (magic !== 'FLVP') {
+                throw new Error(`Invalid binary format: expected 'FLVP', got '${magic}'`);
+            }
+
+            const version = parser.readUint32();
+            const realization = parser.readUint32();
+            const surfaceCount = parser.readUint32();
+
+            debugLog(`Binary file header: version=${version}, realization=${realization}, surfaces=${surfaceCount}`);
+
+            const surfaces = [];
+
+            for (let i = 0; i < surfaceCount; i++) {
+                debugLog(`Reading surface ${i + 1}/${surfaceCount}...`);
+
+                // Read surface header
+                const name = parser.readString(32);
+                const id = parser.readUint32();
+                const vertexCount = parser.readUint32();
+                const faceCount = parser.readUint32();
+
+                // Read color
+                const r = parser.readUint8();
+                const g = parser.readUint8();
+                const b = parser.readUint8();
+                parser.readUint8(); // padding
+                const color = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+
+                debugLog(`Surface '${name}': ${vertexCount} vertices, ${faceCount} faces, color=${color}`);
+
+                // Read vertices
+                const vertices = [];
+                for (let v = 0; v < vertexCount; v++) {
+                    const x = parser.readFloat32();
+                    const y = parser.readFloat32();
+                    const z = parser.readFloat32();
+                    vertices.push([x, y, z]);
+                }
+
+                // Read faces
+                const faces = [];
+                for (let f = 0; f < faceCount; f++) {
+                    const v0 = parser.readUint32();
+                    const v1 = parser.readUint32();
+                    const v2 = parser.readUint32();
+                    faces.push([v0, v1, v2]);
+                }
+
+                surfaces.push({
+                    facies_id: id,
+                    facies_name: name,
+                    color: color,
+                    vertices: vertices,
+                    faces: faces,
+                    statistics: {
+                        vertex_count: vertexCount,
+                        face_count: faceCount
+                    }
+                });
+            }
+
+            const parseTime = performance.now() - startTime;
+            debugLog(`Binary parsing completed in ${parseTime.toFixed(1)}ms`);
+
+            return {
+                metadata: {
+                    realization: realization,
+                    data_type: "binary_envelope_surfaces",
+                    format_version: version.toString(),
+                    total_statistics: {
+                        total_surfaces: surfaceCount,
+                        total_vertices: surfaces.reduce((sum, s) => sum + s.statistics.vertex_count, 0),
+                        total_faces: surfaces.reduce((sum, s) => sum + s.statistics.face_count, 0)
+                    },
+                    parse_time_ms: parseTime
+                },
+                surfaces: surfaces
+            };
+        }
     </script>
 </body>
 </html>
