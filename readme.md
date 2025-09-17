@@ -126,37 +126,37 @@ pip install -r requirements.txt
 
 ### Example 1
 >Multi-phase model (demonstrates multi-phase model rendering priority in non-migration mode)
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_1.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic1.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_1.html)
 
 ### Example 2
 >Channel migration model (demonstrates multi-phase model rendering priority in migration mode)
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_2.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic2.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_2.html)
 
 ### Example 3
 >Alluvial fan model (achieves alluvial fan simulation through trend control algorithm, zonal control algorithm, and angle settings)
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_3.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic3.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_3.html)
 
 ### Example 4
 >Parallel trend model (achieves parallel trend decline generation through trend control algorithm, simulating non-stationary images similar to coastal sedimentary facies)
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic4.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_4.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic4.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_4.html)
 
 ### Example 5
 >Zonal density control - density decline toward one side
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_1.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic5-1.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_5_1.html)
 >Zonal density control - density decline from center toward both sides
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_2.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic5-2.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_5_2.html)
 >Zonal density control - vertical direction density heterogeneity control
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic5-3.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_5_3.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic5-3.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_5_3.html)
 
 ### Example 6
 >Zonal sinuosity control (unidirectional declining trend of sinuosity)
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_1.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic6-1.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_6_1.html)
 >Zonal sinuosity control (bidirectional declining trend of sinuosity)
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic6-2.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_6_2.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic6-2.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_6_2.html)
 
 ### Example 7
 >Zonal thickness control (unidirectional declining trend of thickness)
-[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy/master/png/pic7-1.png)](https://commitfromet.github.io/fluvpy/web_view/web_viewer_7_1.html)
+[![Fluvpy 3D](https://raw.githubusercontent.com/commitfromet/fluvpy-example/master/png/pic7-1.png)](https://commitfromet.github.io/fluvpy-example/web_view/web_viewer_7_1.html)
 
 ## 🛠️ Main Parameters
 
