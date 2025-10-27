@@ -89,7 +89,7 @@ fluvpy_env\Scripts\activate
 source fluvpy_env/bin/activate
 
 # Install all required libraries
-pip install cupy==13.4.0
+pip install cupy-cuda12x
 pip install matplotlib==3.10.6
 pip install numba==0.60.0
 pip install numpy==1.26.4
@@ -106,7 +106,7 @@ pip install scipy==1.16.1
 Create a `requirements.txt` file in the project root directory with the following content:
 
 ```txt
-cupy==13.4.0
+pip install cupy-cuda12x
 matplotlib==3.10.6
 numba==0.60.0
 numpy==1.26.4
