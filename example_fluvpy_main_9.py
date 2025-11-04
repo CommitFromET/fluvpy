@@ -4,7 +4,7 @@ main.py
 """
 import time
 import argparse
-
+import random
 try:
     from sub_modules.engine import engine
     from sub_modules.visualize import fluvpy_visualize
@@ -96,7 +96,8 @@ def main(interactive_vis=False, vis_figsize=(10, 8), vis_dpi=100, save_path=None
     fcpor_base_tri = [0.1, 0.225, 0.35]  # Porosity base value distribution
     fcpor_range_tri = [0.01, 0.015, 0.02]  # Porosity range distribution
 
-    base_seed = 89769  # Base seed
+   # base_seed = 89769  # Base seed
+    base_seed = random.randint(10000, 999999)  # Random seed
     vegetation_seed = base_seed + vegetation_seed_offset  # Independent vegetation seed
 
     # Build simulation parameter dictionary

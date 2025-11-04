@@ -26,7 +26,7 @@ def run_fluvpy_multiple_times(num_iterations):
         # Use subprocess to call the external program
         try:
             # Execute A_fluvpy_main_TI64-64-25.py (Note: The script name in the command is 'main.py')
-            subprocess.run(["python", "main.py"], check=True)
+            subprocess.run(["python", "A_fluvpy_main均质-训练数据.py"], check=True)
             print(f"Iteration {i+1} completed")
         except subprocess.CalledProcessError as e:
             print(f"Execution failed: {e}")
