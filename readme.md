@@ -1,7 +1,7 @@
 # 🌊 Fluvpy
 
 <div align="center">
-
+[![DOI](https://zenodo.org/badge/1053918605.svg)](https://doi.org/10.5281/zenodo.18184841)
 [![Research](https://img.shields.io/badge/Research-Geological%20Modeling-blue.svg)](https://github.com/CommitFromET/fluvpy)
 [![Open Source](https://img.shields.io/badge/Open%20Source-❤-red.svg)](https://github.com/CommitFromET/fluvpy)
 [![Training Images](https://img.shields.io/badge/Training%20Images-Generation-purple.svg)](https://github.com/CommitFromET/fluvpy)
